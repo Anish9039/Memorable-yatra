@@ -3,7 +3,7 @@ import React from 'react';
 
 const LandingPage = () => {
   return (
-    <div className="font-sans">
+  <div className="font-sans">
       {/* Navigation */}
       <nav className="bg-white shadow-lg fixed w-full z-50">
         <div className="max-w-7xl mx-auto px-4">
@@ -146,7 +146,7 @@ const LandingPage = () => {
           </div>
         </div>
       </footer>
-    </div>
+    </div>  
   );
 };
 
