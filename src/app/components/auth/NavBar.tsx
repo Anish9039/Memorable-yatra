@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 function NavBar() {
@@ -7,7 +8,7 @@ function NavBar() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <span className="text-2xl font-bold text-blue-600">Memorable Yatra</span>
+              <span className="text-2xl font-bold text-blue-600"><Link href='/' >Memorable Yatra</Link></span>
             </div>
             <div className="hidden md:flex space-x-8">
               <a href="#home" className="text-gray-700 hover:text-blue-600">Home</a>
@@ -16,7 +17,7 @@ function NavBar() {
               <a href="#contact" className="text-gray-700 hover:text-blue-600">Contact</a>
             </div>
             <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700">
-              Sign In
+              <Link href='/pages/auth' >Sign In</Link>
             </button>
           </div>
         </div>

@@ -11,7 +11,7 @@ const SignupForm = () => {
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Already have an account?{' '}
-          <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
+          <Link href="/pages/auth" className="font-medium text-blue-600 hover:text-blue-500">
             Sign in here
           </Link>
         </p>
