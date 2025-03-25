@@ -2,6 +2,7 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import DashboardLayout from '../page';
 import { ChartBarIcon, PencilIcon, CogIcon, UserIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 
 
@@ -30,10 +31,13 @@ export default function Dashboard() {
         
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Blog Posts</h1>
+        <Link href='/dashboard/post/Newpost'>
         <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 flex items-center">
           <PlusIcon className="h-5 w-5 mr-2" />
           New Post
         </button>
+        </Link>
+       
       </div>
 
       <div className="grid grid-cols-1 gap-6">

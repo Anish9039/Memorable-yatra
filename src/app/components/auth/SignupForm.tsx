@@ -1,10 +1,52 @@
-// components/auth/SignupForm.tsx
+'use client'
+
 import Link from 'next/link';
 import { EnvelopeIcon, LockClosedIcon, UserIcon } from '@heroicons/react/24/outline';
+import z from 'zod';
+import axios from 'axios';
+import { useForm } from "react-hook-form";
+import React, { useState } from 'react';
+import { Callout } from '@radix-ui/themes';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+
+
+const createIssueSchema = z.object({
+    name: z.string().min(1, 'Username is required').max(100),
+    email: z.string().min(1, 'Email is required').email('Invalid email'),
+    password: z.string().min(1, 'Password is required').min(8, 'Password must have at least 8 characters'),
+});
 
 const SignupForm = () => {
+  const router = useRouter();
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(createIssueSchema)
+  });  
+  
+  const [error, setError] = useState('');
+
+  const onSubmit = async (data) => {
+    try {
+      await axios.post('/api/auth', data);
+      setError('');
+      toast.success('login successfully!');
+
+      router.push('/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Unexpected error occurred');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div>
+           {error && (
+        <Callout.Root color='red'>
+          <Callout.Text>{error}</Callout.Text>
+        </Callout.Root>
+      )}  
+
+    <form noValidate   className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8" onSubmit={handleSubmit(onSubmit)}  >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Create your account
@@ -19,7 +61,7 @@ const SignupForm = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
+          <div className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                 Full Name
@@ -28,18 +70,20 @@ const SignupForm = () => {
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <UserIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </div>
-                <input
-                  id="name"
+                <input 
+                  id="name"  {...register('name')} 
                   name="name"
                   type="text"
-                  autoComplete="name"
-                  required
+
                   className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md 
                     placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 
                     sm:text-sm"
-                  placeholder="John Doe"
+                  placeholder="John Doe" 
                 />
+          
               </div>
+              {errors.name && <p className="text-red-500 text-sm py-2">{errors.name.message}</p>}
+
             </div>
 
             <div>
@@ -51,7 +95,7 @@ const SignupForm = () => {
                   <EnvelopeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </div>
                 <input
-                  id="email"
+                  id="email"  {...register('email')} 
                   name="email"
                   type="email"
                   autoComplete="email"
@@ -61,7 +105,10 @@ const SignupForm = () => {
                     sm:text-sm"
                   placeholder="you@example.com"
                 />
+
               </div>
+              {errors.email && <p className="text-red-500 text-sm py-2">{errors.email.message}</p>}
+
             </div>
 
             <div>
@@ -73,7 +120,7 @@ const SignupForm = () => {
                   <LockClosedIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </div>
                 <input
-                  id="password"
+                  id="password" {...register('password')} 
                   name="password"
                   type="password"
                   autoComplete="new-password"
@@ -83,23 +130,21 @@ const SignupForm = () => {
                     sm:text-sm"
                   placeholder="••••••••"
                 />
+
               </div>
+              {errors.password && <p className="text-red-500 text-sm py-3">{errors.password.message}</p>}
+
               <p className="mt-2 text-sm text-gray-500">
                 At least 8 characters with a number and symbol
               </p>
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md 
-                  shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Create Account
-              </button>
+
             </div>
-          </form>
+            <button type="submit" className="w-full py-2 bg-blue-600 text-white rounded-md mt-4">Create Account</button>
+
+          </div>
 
           <div className="mt-6">
             <div className="relative">
@@ -127,6 +172,8 @@ const SignupForm = () => {
           </div>
         </div>
       </div>
+
+    </form>
     </div>
   );
 };

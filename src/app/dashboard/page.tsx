@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChartBarIcon, PencilIcon, CogIcon, UserIcon } from '@heroicons/react/24/outline';
 import { usePathname } from 'next/navigation';
+import classNames from 'classnames';
 
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -13,11 +14,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const navigation = [
     { name: 'post', href: '/dashboard/post', icon: PencilIcon},
     { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBarIcon },
-    { name: 'Settings', href: '/dashboard/settings', icon: CogIcon},
+    { name: 'Settings', href: '/dashboard/settings', icon: CogIcon },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50  ">
       <div className="flex">
         {/* Sidebar */}
         <div className="w-64 min-h-screen bg-gray-900 p-4">
@@ -30,12 +31,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center px-3 py-2.5 text-sm rounded-md
-                  ${item.href 
-                    ? 'bg-gray-800 text-white' 
-                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                  }`
-                }
+                className={classNames({
+                  'flex items-center px-3 py-2.5 text-sm rounded-md1': true, // Always applied
+                  'text-zinc-900': item.href === currentPath,
+                  'text-zinc-500': item.href !== currentPath,
+                  'hover:text-zinc-800': true
+              })}
               >
                 <item.icon className="h-5 w-5 mr-3" />
                 {item.name}
